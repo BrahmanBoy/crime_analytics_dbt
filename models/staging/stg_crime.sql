@@ -2,15 +2,15 @@
 
 with src as (
   select
-    {{ dbt_utils.generate_surrogate_key(['case_number']) }} as crime_sk,
-    cast(case_number as varchar) as incident_id,
-    try_to_timestamp_ntz(occur_date) as occurred_at_ts,
-    try_to_number(opendatalat)::float as latitude,
-    try_to_number(opendatalon)::float as longitude,
-    lower(trim(offense_type)) as crime_type_raw,
-    initcap(trim(neighborhood)) as neighborhood,
-    initcap(trim(address)) as address,
-    try_to_timestamp_ntz(occur_date)::date as occurred_on_date
+    {{ dbt_utils.generate_surrogate_key(['CASE_NUMBER']) }} as crime_sk,
+    cast(CASE_NUMBER as varchar)                as incident_id,
+    try_to_timestamp_ntz(OCCUR_DATE)            as occurred_at_ts,
+    try_to_number(OPENDATALAT)::float           as latitude,
+    try_to_number(OPENDATALON)::float           as longitude,
+    lower(trim(OFFENSE_TYPE))                   as crime_type_raw,
+    initcap(trim(NEIGHBORHOOD))                 as neighborhood,
+    initcap(trim(ADDRESS))                      as address,
+    try_to_timestamp_ntz(OCCUR_DATE)::date      as occurred_on_date
   from {{ source('src_crime','filtered_offenses') }}
 ),
 mapped as (
