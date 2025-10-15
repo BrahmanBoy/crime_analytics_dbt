@@ -1,0 +1,27 @@
+version: 2
+models:
+  - name: stg_crime
+    description: "Cleaned and standardized crime incidents for Portland."
+    columns:
+      - name: crime_sk
+        tests: [not_null, unique]
+      - name: incident_id
+        tests: [not_null]
+      - name: occurred_at_ts
+        tests: [not_null]
+      - name: crime_type_std
+        tests:
+          - accepted_values:
+              values: ['assault','burglary','theft','robbery','homicide','fraud','vandalism','other']
+
+  - name: stg_transit_stops
+    description: "Cleaned and standardized transit stations."
+    columns:
+      - name: stop_sk
+        tests: [not_null, unique]
+      - name: stop_id
+        tests: [not_null]
+      - name: latitude
+        tests: [not_null]
+      - name: longitude
+        tests: [not_null]
