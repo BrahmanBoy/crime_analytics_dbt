@@ -5,15 +5,9 @@ models:
     description: "Staging view for filtered offenses."
     tests: []
     columns: []
+
   - name: stg_transit_stops
     description: "Staging view for TriMet transit stations (Portland)."
     tests: []
     columns: []
 
-sources:
-  - name: crime_src
-    tables:
-      - name: FILTERED_OFFENSES
-        tests: []
-      - name: TRANSIT_STATIONS_PORTLAND
-        tests: []
