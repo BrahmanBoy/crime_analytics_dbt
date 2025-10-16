@@ -1,17 +1,12 @@
-
-# Name your project! Project names should contain only lowercase characters
-# and underscores. A good package name should reflect your organization's
-# name or the intended use of these models
+# dbt_project.yml
 name: 'my_new_project'
 version: '1.0.0'
 config-version: 2
 
-# This setting configures which "profile" dbt uses for this project.
+# Which profile to use (as defined in profiles.yml / dbt Cloud connection)
 profile: 'default'
 
-# These configurations specify where dbt should look for different types of files.
-# The `model-paths` config, for example, states that models in this project can be
-# found in the "models/" directory. You probably won't need to change these!
+# Project paths
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
@@ -19,35 +14,22 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
-target-path: "target"  # directory which will store compiled SQL files
-clean-targets:         # directories to be removed by `dbt clean`
+# Build artifacts / clean targets
+target-path: "target"
+clean-targets:
   - "target"
   - "dbt_packages"
 
-
-# Configuring models
-# Full documentation: https://docs.getdbt.com/docs/configuring-models
-
-# In dbt, the default materialization for a model is a view. This means, when you run 
-# dbt run or dbt build, all of your models will be built as a view in your data platform. 
-# The configuration below will override this setting for models in the example folder to 
-# instead be materialized as tables. Any models you add to the root of the models folder will 
-# continue to be built as views. These settings can be overridden in the individual model files
-# using the `{{ config(...) }}` macro.
-
+# Model configurations
 models:
-  my_new_project:          # <-- must match the "name" at the top of this file
-    +database: CRIME_DB
-    +schema: ANALYTICS
-    +materialized: view     # default for everything unless overridden
+  my_new_project:                # must match "name" above
+    +database: CRIME_DB          # write models to CRIME_DB
+    +schema: ANALYTICS           # …and into the ANALYTICS schema
+    +materialized: view          # default materialization
 
     staging:
-      +materialized: view   # be explicit for staging
+      +materialized: view        # explicit for staging models
 
-    # (optional) keep the example override if you still want it as tables
+    # Optional example folder override—keep only if you use models/example/*
     example:
       +materialized: table
-
-
-
-
