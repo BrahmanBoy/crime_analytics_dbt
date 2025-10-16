@@ -36,10 +36,18 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
-  my_new_project:
-    # Applies to all files under models/example/
+  my_new_project:          # <-- must match the "name" at the top of this file
+    +database: CRIME_DB
+    +schema: ANALYTICS
+    +materialized: view     # default for everything unless overridden
+
+    staging:
+      +materialized: view   # be explicit for staging
+
+    # (optional) keep the example override if you still want it as tables
     example:
       +materialized: table
+
 
 
 
