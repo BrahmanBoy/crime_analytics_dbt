@@ -1,12 +1,9 @@
-# dbt_project.yml
 name: 'my_new_project'
 version: '1.0.0'
 config-version: 2
 
-# Which profile to use (as defined in profiles.yml / dbt Cloud connection)
 profile: 'default'
 
-# Project paths
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
@@ -14,22 +11,15 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
-# Build artifacts / clean targets
 target-path: "target"
 clean-targets:
   - "target"
   - "dbt_packages"
 
-# Model configurations
 models:
-  my_new_project:                # must match "name" above
-    +database: CRIME_DB          # write models to CRIME_DB
-    +schema: ANALYTICS           # …and into the ANALYTICS schema
-    +materialized: view          # default materialization
-
+  my_new_project:
+    +database: CRIME_DB       # keep the database at project level
+    # DO NOT set +schema here (let the Environment schema win)
+    +materialized: view
     staging:
-      +materialized: view        # explicit for staging models
-
-    # Optional example folder override—keep only if you use models/example/*
-    example:
-      +materialized: table
+      +materialized: view
