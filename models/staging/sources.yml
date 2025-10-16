@@ -1,10 +1,10 @@
 version: 2
+
 sources:
-  - name: src_crime
+  - name: crime_src
     database: CRIME_DB
     schema: ANALYTICS
     tables:
-      - name: filtered_offenses
-        description: "Raw child-trafficking-related offenses in Portland."
-      - name: transit_stations_portland
-        description: "Major transit stations in Portland with coordinates."
+      - name: FILTERED_OFFENSES
+      - name: TRANSIT_STATIONS_PORTLAND
+

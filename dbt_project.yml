@@ -1,28 +1,21 @@
-name: 'my_new_project'
-version: '1.0.0'
+name: "crime_dbt"
+version: "1.0.0"
 config-version: 2
 
-profile: 'default'
+profile: "crime_profile"   # dbt Core: must match your profiles.yml entry
+# dbt Cloud: set Database=CRIME_DB, Warehouse=COMPUTE_WH, User=BRAHMANBOY in the connection
 
 model-paths: ["models"]
-analysis-paths: ["analyses"]
-test-paths: ["tests"]
-seed-paths: ["seeds"]
 macro-paths: ["macros"]
+test-paths: ["models"]
 snapshot-paths: ["snapshots"]
-
-target-path: "target"
-clean-targets:
-  - "target"
-  - "dbt_packages"
+seed-paths: ["seeds"]
+analysis-paths: ["analyses"]
 
 models:
-  my_new_project:
-    # remove this line -> +schema: ANALYTICS
+  crime_dbt:
     +materialized: view
+    +database: CRIME_DB
+    +schema: ANALYTICS
     staging:
-      +materialized: view
-  example:
-    +materialized: table
-
-
+      +tags: ["staging"]
