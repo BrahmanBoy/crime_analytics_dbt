@@ -1,0 +1,23 @@
+name: "crime_dbt"
+version: "1.0.0"
+config-version: 2
+
+# If you're on dbt Cloud, this value is arbitrary.
+# If you're on dbt Core, it must match a profile in ~/.dbt/profiles.yml.
+profile: "crime_profile"
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]        # keep tests separated (empty folder for now)
+snapshot-paths: ["snapshots"]
+seed-paths: ["seeds"]
+analysis-paths: ["analyses"]
+
+models:
+  crime_dbt:
+    +materialized: view
+    # Hard-pin where models write (database + schema)
+    +database: CRIME_DB
+    +schema: ANALYTICS
+    staging:
+      +tags: ["staging"]
