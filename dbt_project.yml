@@ -18,8 +18,9 @@ clean-targets:
 
 models:
   my_new_project:
-    +database: CRIME_DB       # keep the database at project level
-    # DO NOT set +schema here (let the Environment schema win)
+    +database: CRIME_DB
+    +schema: ANALYTICS
     +materialized: view
     staging:
       +materialized: view
+
