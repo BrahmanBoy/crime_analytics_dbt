@@ -18,9 +18,11 @@ clean-targets:
 
 models:
   my_new_project:
-    +database: CRIME_DB
-    +schema: ANALYTICS
+    # remove this line -> +schema: ANALYTICS
     +materialized: view
     staging:
       +materialized: view
+  example:
+    +materialized: table
+
 
