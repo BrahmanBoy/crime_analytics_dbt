@@ -32,7 +32,7 @@ df_daily = load_df("""
 
 # Choose station model (toggle here)
 USE_NEAREST = True
-station_view = "FCT_CRIME_BY_STATION__CLOSEST" if USE_NEAREST else "FCT_CRIME_BY_STATION__KEY"
+station_view = "FCT_CRIME_BY_STATION__CLOSEST" 
 
 df_station = load_df(f"""
     select station_id, station_name, station_lat as lat, station_lon as lon, crime_count
