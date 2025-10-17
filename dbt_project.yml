@@ -22,3 +22,5 @@ models:
       +tags: ["staging"]
     analytics:
       +tags: ["analytics"]
+      fct_crime_by_station__key:
+        +enabled: false
