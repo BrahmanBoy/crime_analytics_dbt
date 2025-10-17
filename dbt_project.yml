@@ -16,8 +16,9 @@ analysis-paths: ["analyses"]
 models:
   crime_dbt:
     +materialized: view
-    # Hard-pin where models write (database + schema)
     +database: CRIME_DB
     +schema: ANALYTICS
     staging:
       +tags: ["staging"]
+    analytics:
+      +tags: ["analytics"]
