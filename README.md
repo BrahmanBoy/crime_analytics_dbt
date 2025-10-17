@@ -1,10 +1,19 @@
 Welcome to your new dbt project!
+### 🚀 Live Dashboard  
+[Open in Streamlit Cloud](https://<your-app-name>.streamlit.app)
 
-### Using the starter project
+## Transit Crime Analytics Dashboard
 
-Try running the following commands:
-- dbt run
-- dbt test
+Built with **dbt + Snowflake + Streamlit**, this dashboard visualizes
+crime trends and high-risk transit stations across U.S. regions.
+It connects directly to dbt models hosted in Snowflake.
+
+### Tech stack
+- **Snowflake** – data warehouse  
+- **dbt** – data modeling and transformations  
+- **Streamlit** – interactive visualization  
+- **Python / SQL** – data logic and analytics
+
 
 
 ### Resources:
