@@ -1,14 +1,42 @@
-# app.py — Streamlit in Snowflake (no pydeck)
+# app.py — runs in BOTH Snowflake Streamlit and Streamlit Cloud
 
+import os
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from snowflake.snowpark.context import get_active_session
+
+# --- Try Snowflake-internal session first; else fall back to external creds ---
+session = None
+_running_in_snowflake = False
+try:
+    from snowflake.snowpark.context import get_active_session
+    session = get_active_session()
+    _running_in_snowflake = True
+except Exception:
+    _running_in_snowflake = False
+
+# External connector (used on Streamlit Cloud)
+def _external_session():
+    from snowflake.snowpark import Session
+    # Expect secrets.toml -> [snowflake] user, password, account, warehouse, database, schema, role
+    cfg = st.secrets["snowflake"]
+    return Session.builder.configs(
+        {
+            "user": cfg["user"],
+            "password": cfg["password"],
+            "account": cfg["account"],
+            "warehouse": cfg["warehouse"],
+            "database": cfg["database"],
+            "schema": cfg["schema"],
+            "role": cfg.get("role", None),
+        }
+    ).create()
+
+if session is None:
+    session = _external_session()
 
 st.set_page_config(page_title="Transit Crime Dashboard", layout="wide")
 st.title("🚉 Transit Crime Trends & Station Risk (Portland)")
-
-session = get_active_session()
 
 @st.cache_data(ttl=600)
 def load_df(sql: str) -> pd.DataFrame:
@@ -20,7 +48,7 @@ def coerce_latlon(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         return df
     df = df.copy()
-    # Standardize to LAT/LON
+    # standardize
     if "STATION_LAT" in df.columns: df.rename(columns={"STATION_LAT": "LAT"}, inplace=True)
     if "STATION_LON" in df.columns: df.rename(columns={"STATION_LON": "LON"}, inplace=True)
     if "LAT" in df.columns and "LON" in df.columns:
@@ -30,7 +58,7 @@ def coerce_latlon(df: pd.DataFrame) -> pd.DataFrame:
         df = df[df["LAT"].between(-90, 90) & df["LON"].between(-180, 180)]
     return df
 
-# --- Data pulls ---
+# --- Data queries (same as Snowflake app) ---
 df_daily = load_df("""
     select occurred_date, crime_count
     from ANALYTICS.FCT_CRIME_BY_DAY
@@ -49,13 +77,12 @@ df_station = load_df("""
 """)
 df_station = coerce_latlon(df_station)
 
-# --- UI ---
 left, right = st.columns([2, 3], gap="large")
 
 with left:
     st.subheader("Daily Crime Trend")
     if df_daily.empty:
-        st.info("No daily data to display.")
+        st.info("No daily data.")
     else:
         st.line_chart(df_daily.set_index("OCCURRED_DATE")["CRIME_COUNT"])
 
@@ -80,4 +107,7 @@ with right:
         fig.update_geos(fitbounds="locations", scope="north america", showcountries=False, showcoastlines=True)
         st.plotly_chart(fig, use_container_width=True)
 
-st.caption("Data: dbt models in CRIME_DB.ANALYTICS • Runs in Snowflake Streamlit")
+st.caption(
+    ("Running inside Snowflake Streamlit" if _running_in_snowflake else "Running on Streamlit Cloud")
+    + " • Data from CRIME_DB.ANALYTICS"
+)
