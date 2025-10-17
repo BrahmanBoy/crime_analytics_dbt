@@ -3,9 +3,8 @@ with base as (
   from {{ ref('fct_crime_events') }}
   where occurred_date is not null
 )
-select
-  week_start,
-  count(*) as crime_count
+select week_start, count(*) as crime_count
 from base
 group by 1
 order by 1
+
