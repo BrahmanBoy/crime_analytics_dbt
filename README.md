@@ -1,6 +1,6 @@
 Welcome to your new dbt project!
 ### 🚀 Live Dashboard  
-[Open in Streamlit Cloud](https://<your-app-name>.streamlit.app)
+[Open in Streamlit Cloud](https://crimeanalyticsdbt-9rtpk43zdj6njxnfndnfyr.streamlit.app/)
 
 ## Transit Crime Analytics Dashboard
 
