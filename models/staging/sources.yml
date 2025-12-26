@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: crime_src
+    database: CRIME_DB
+    schema: ANALYTICS
+    tables:
+      - name: FILTERED_OFFENSES
+      - name: TRANSIT_STATIONS_PORTLAND
+
+
+

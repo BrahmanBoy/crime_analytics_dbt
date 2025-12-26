@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: dim_transit_stations
+    description: "Station dimension for TriMet/Portland."
+    columns:
+      - name: station_id
+        tests: [not_null, unique]
+
+  - name: fct_crime_events
+    description: "One row per crime event with standardized columns."
+    columns:
+      - name: crime_sk
+        tests: [not_null, unique]
+      - name: occurred_date
+        tests: [not_null]
+
+  - name: fct_crime_by_day
+    description: "Daily crime counts."
+    columns:
+      - name: occurred_date
+        tests: [not_null, unique]
+
+  - name: fct_crime_by_week
+    description: "Weekly crime counts."
+    columns:
+      - name: week_start
+        tests: [not_null, unique]
+
+  - name: fct_crime_by_station__closest
+    description: "Crime counts per station via nearest-station (geospatial)."
+    columns:
+      - name: station_id
+        tests: [not_null]
+      - name: crime_count
+        tests: []
